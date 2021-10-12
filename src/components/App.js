@@ -5,33 +5,31 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
-
-
 function App() {
-  const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
 
-  const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
-  const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState('');
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditAvatarClick() {
-    setisEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    setisEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setisAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function closeAllPopups() {
-    setisEditAvatarPopupOpen(false);
-    setisEditProfilePopupOpen(false);
-    setisAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
     setSelectedCard('');
   }
 
@@ -46,48 +44,42 @@ function App() {
         <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} />
         <Footer />
       </div>
-      <PopupWithForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}
-        children={<form className="popup__form popup__form_type_profile" name="profile-form" noValidate>
-          <input type="text" id="popup__nickname" name="nickname" placeholder="Имя" className="popup__input" minLength="2"
-            maxLength="40" required />
-          <span className="popup__error popup__nickname-error"></span>
-          <input type="text" id="popup__info" name="info" placeholder="О себе" className="popup__input" minLength="2"
-            maxLength="200" required />
-          <span className="popup__error popup__info-error"></span>
-          <button type="submit" className="popup__button">Сохранить</button>
-        </form>}
-      />
-      <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}
-        children={<form className="popup__form popup__form_type_card" name="card-form" noValidate>
-          <input type="text" id="popup__newplace" name="newplace" placeholder="Название" className="popup__input"
-            minLength="2" maxLength="30" required />
-          <span className="popup__error popup__newplace-error"></span>
-          <input type="url" id="popup__picture" name="picture" placeholder="Ссылка на картинку" className="popup__input"
-            required />
-          <span className="popup__error popup__picture-error"></span>
-          <button type="submit" className="popup__button">Сохранить</button>
-        </form>}
-      />
-      <PopupWithForm name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
-        children={<form className="popup__form popup__form_type_avatar" name="card-form" noValidate>
-          <input type="url" id="popup__avatar" name="avatar" placeholder="Ссылка на картинку" className="popup__input"
-            required />
-          <span className="popup__error popup__avatar-error"></span>
-          <button type="submit" className="popup__button popup__button_type_avatar">Сохранить</button>
-        </form>}
-      />
-      <PopupWithForm name="delete" title="Вы уверены?"
-        children={
-          <>
-            <button type="button" className="popup__close-icon popup__close-icon_type_card"></button>
-            <h2 className="popup__title popup__title_type_delete">Вы уверены?</h2>
-            <button type="button" className="popup__button popup__button_type_delete">Да</button>
-          </>
-        }
-      />
+      <PopupWithForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} subMit="Сохранить"
+      >
+        <input type="text" id="popup__nickname" name="nickname" placeholder="Имя" className="popup__input" minLength="2"
+          maxLength="40" required />
+        <span className="popup__error popup__nickname-error"></span>
+        <input type="text" id="popup__info" name="info" placeholder="О себе" className="popup__input" minLength="2"
+          maxLength="200" required />
+        <span className="popup__error popup__info-error"></span>
+      </PopupWithForm>
+      <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} subMit="Сохранить"
+      >
+        <input type="text" id="popup__newplace" name="newplace" placeholder="Название" className="popup__input"
+          minLength="2" maxLength="30" required />
+        <span className="popup__error popup__newplace-error"></span>
+        <input type="url" id="popup__picture" name="picture" placeholder="Ссылка на картинку" className="popup__input"
+          required />
+        <span className="popup__error popup__picture-error"></span>
+      </PopupWithForm>
+      <PopupWithForm name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} subMit="Сохранить"
+      >
+        <input type="url" id="popup__avatar" name="avatar" placeholder="Ссылка на картинку" className="popup__input"
+          required />
+        <span className="popup__error popup__avatar-error"></span>
+      </PopupWithForm>
+      <PopupWithForm name="delete" title="Вы уверены?" subMit="Да"
+      >
+        <button type="button" className="popup__close-icon popup__close-icon_type_card"></button>
+        <h2 className="popup__title popup__title_type_delete">Вы уверены?</h2>
+      </PopupWithForm>
       <ImagePopup name="picture" card={selectedCard} onClose={closeAllPopups} />
     </div>
   );
 }
 
 export default App;
+
+// Андрей, по поводу Prettier: установил пару спринтов назад так же по рекомендации код-ревью. Немного попользовался и понял, что стал теряться в коде
+//(стало сложно читать код). Видимо нужно привыкать... Сейчас пока отключил это расширение, потому как и так иногда не совсем понимаю, что "клацаю"
+// на клавиатуре :)  Сейчас использую стандартный функционал VScode (F1 -> Форматировать документ).

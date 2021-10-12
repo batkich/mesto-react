@@ -11,7 +11,7 @@ class Api {
     return Promise.reject(`Ошибка ${res.status}`);
   }
 
-  getprofileInfo() {
+  getProfileInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
     })

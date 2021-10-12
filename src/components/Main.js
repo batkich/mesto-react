@@ -15,25 +15,19 @@ function Main(props) {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-
-    api.getprofileInfo().then((res) => {
-      setuserName(res.name);
-      setuserDescription(res.about)
-      setuserAvatar(res.avatar) // здравствуйте, хочу обратить внимание код-ревью на то, что в момент выполнения проектной работы,
-      //ссылка получаемая в api ведет на несуществующую страницу в связи с чем иконка аватара на странице не отображается.
-
-    })
-    //  return () => {
-    //  };
-  });
-
-  React.useEffect(() => {
-    api.getInitialCards().then((res) => {
-      setCards(res);
-    })
-    //  return () => {
-    //  };
-  });
+    Promise.all([
+      api.getProfileInfo(),
+      api.getInitialCards()
+    ])
+      .then((res) => {
+        setuserName(res[0].name);
+        setuserDescription(res[0].about)
+        setuserAvatar(res[0].avatar)
+        setCards(res[1]);
+      }).catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }, []);
 
   return (
     <main className="content">
