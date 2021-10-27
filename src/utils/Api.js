@@ -30,8 +30,8 @@ class Api {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        name: item.nickname,
-        about: item.info,
+        name: item.name,
+        about: item.about,
       })
     })
       .then(this._checkResponse);
@@ -57,17 +57,9 @@ class Api {
       .then(this._checkResponse);
   }
 
-  likeCard(item) {
+  changeLikeCardStatus(item, isLiked) {
     return fetch(`${this.baseUrl}/cards/likes/${item}`, {
-      method: 'PUT',
-      headers: this.headers,
-    })
-      .then(this._checkResponse);
-  }
-
-  dislikeCard(item) {
-    return fetch(`${this.baseUrl}/cards/likes/${item}`, {
-      method: 'DELETE',
+      method: isLiked ? 'PUT' : 'DELETE',
       headers: this.headers,
     })
       .then(this._checkResponse);
@@ -84,6 +76,7 @@ class Api {
       .then(this._checkResponse);
   }
 }
+
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27',
