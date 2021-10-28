@@ -24,18 +24,10 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getInitialCards()
-      .then((res) => {
-        setCards(res);
-      }).catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    api.getProfileInfo()
-      .then((res) => {
-        setCurrentUser(res);
+    Promise.all([api.getInitialCards(), api.getProfileInfo()])
+      .then(([cards, userData]) => {
+        setCards(cards);
+        setCurrentUser(userData);
       }).catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
@@ -70,6 +62,8 @@ function App() {
 
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    }).catch((err) => {
+      console.log(`Ошибка: ${err}`);
     });
 
   }
@@ -77,6 +71,8 @@ function App() {
   function handleCardDelete(card) {
     api.deleteCard(card._id).then(() => {
       setCards((state) => state.filter((c) => c._id !== card._id));
+    }).catch((err) => {
+      console.log(`Ошибка: ${err}`);
     });
   }
 
@@ -84,33 +80,30 @@ function App() {
     api.setProfileInfo(data)
       .then((res) => {
         setCurrentUser(res);
+        setIsEditProfilePopupOpen(false);
       }).catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-
-    setIsEditProfilePopupOpen(false);
   }
 
   function handleUpdateAvatar(data) {
     api.setNewAvatar(data)
       .then((res) => {
         setCurrentUser(res);
+        setIsEditAvatarPopupOpen(false);
       }).catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-
-    setIsEditAvatarPopupOpen(false);
   }
 
   function handleAddPlaceSubmit(data) {
     api.setNewCard(data)
       .then((res) => {
         setCards([res, ...cards]);
+        setIsAddPlacePopupOpen(false);
       }).catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-
-    setIsAddPlacePopupOpen(false);
   }
 
   return (
